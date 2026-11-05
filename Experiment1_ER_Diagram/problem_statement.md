@@ -22,50 +22,42 @@ FlexiFit Gym wants a database to manage its members, trainers, and fitness progr
 - Payments tracked for memberships and sessions.
 
 ### ER Diagram:
-<img width="972" height="613" alt="a" src="https://github.com/user-attachments/assets/c9aff081-f906-4934-9b5e-3a631419fb7a" />
-
+<img width="972" height="613" alt="Screenshot 2026-09-11 205800" src="https://github.com/user-attachments/assets/1eb928bb-31bc-4d7b-8e04-304a8ca87e18" />
 
 ### Entities and Attributes
 
-| **Entity**       | **Attributes (PK, FK)**                                  | **Notes**                                          |
-| ---------------- | -------------------------------------------------------- | -------------------------------------------------- |
-| Member           | Member_ID (PK), Name, Phone, Membership_Type, Start_Date | Stores member registration and membership details. |
-| Program          | Program_ID (PK), Program_Name, Duration                  | Stores fitness program details.                    |
-| Trainer          | Trainer_ID (PK), Name, Specialization                    | Stores trainer information and specialization.     |
-| Personal_Session | Session_ID (PK), Date                                    | Stores personal training session details.          |
-| Attendance       | Attendance_ID (PK), Status, Date                         | Records member attendance details.                 |
-| Payment          | Payment_ID (PK), Amount, Payment_Type, Payment_Date      | Stores payment transaction details.                |
-
+| Entity | Attributes (PK, FK) | Notes |
+|--------|--------------------|-------|
+|Member|	Member_ID (PK), Name, Membership_Type, Start_Date, Phone, Email|	Stores member registration details.|
+|Program|	Program_ID (PK), Program_Name, Category, Duration, Schedule	|Stores fitness program details such as Yoga, Zumba, etc.|
+|Trainer|	Trainer_ID (PK), Trainer_Name, Specialization, Phone, Email	|Stores trainer details and specialization.|
+|Session|	Session_ID (PK), Session_Date, Session_Time|	Stores personal training session information.|
+|Attendance	|Attendance_ID (PK), Status, Remarks|	Records attendance for each training session.|
+|Payment|	Payment_ID (PK), Amount, Payment_Date|	Stores payment details made by members.|
 
 ### Relationships and Constraints
 
-| **Relationship**                          | **Cardinality** | **Participation** | **Notes**                                                                                   |
-| ----------------------------------------- | --------------- | ----------------- | ------------------------------------------------------------------------------------------- |
-| Member — Joins — Program                  | 1:N (As drawn)  | Partial           | One member can join multiple programs.                                                      |
-| Program — Has — Trainer                   | M:N             | Partial           | A program can have multiple trainers, and a trainer can handle multiple programs.           |
-| Member — Books — Personal_Session         | 1:N             | Partial           | A member can book multiple personal sessions, while each session is booked by one member.   |
-| Trainer — Conducted_by — Personal_Session | 1:N             | Partial           | One trainer can conduct multiple personal sessions.                                         |
-| Personal_Session — Has — Attendance       | M:1 (As drawn)  | Partial           | Multiple personal sessions are connected to one attendance record according to the diagram. |
-| Member — Makes — Payment                  | 1:N (Assumed)   | Partial           | A member can make multiple payments, and each payment belongs to one member.                |
-
+| Relationship | Cardinality | Participation | Notes |
+|--------------|------------|---------------|-------|
+|Member — Joins — Program	|M:N|	Partial	|A member can join multiple programs, and a program can have multiple members.|
+|Program — Assigned_to — Trainer|	M:N |Partial|	A program can have multiple trainers, and a trainer can be assigned to multiple programs.|
+|Member — Books — Session	|1:M|	Partial|	A member can book multiple sessions, while each session is booked by one member.|
+|Trainer — Conducts — Session|	1:M	|Partial|	A trainer can conduct multiple sessions, while each session is conducted by one trainer.|
+|Session — Has — Attendance	|1:1|	Total (Session)	|Each session has an attendance record.|
+|Member — Makes — Payment|	1:M	|Partial|	A member can make multiple payments, and each payment belongs to one member.|
 
 ### Assumptions
-1.Each member, program, trainer, session, attendance record, and payment has a unique ID.
+-Each member, program, trainer, session, attendance record, and payment has a unique ID.
 
-2.A member can join multiple fitness programs.
+-A member can join multiple fitness programs, and a program can have multiple members.
 
-3.A program can have multiple trainers, and a trainer can handle multiple programs.
+-A program can have multiple trainers, and a trainer can be assigned to multiple programs.
 
-4.Each personal training session is associated with one member and one trainer.
+-Each personal training session is associated with one member and one trainer.
 
-5.Attendance is maintained to track member participation.
+-Attendance is recorded for each session.
 
-6.Payments are made only by registered members.
-
-7.Each payment is associated with a unique Payment_ID.
-
-8.A member can make multiple payments for gym services.
-
+-Payments are made only by registered members.
 
 ---
 
@@ -83,54 +75,44 @@ The Central Library wants to manage book lending and cultural events.
 - Overdue fines apply for late returns.
 
 ### ER Diagram:
-<img width="993" height="592" alt="b" src="https://github.com/user-attachments/assets/55b9ab18-e77b-48d2-8ab0-68bba3cb456b" />
-
+<img width="993" height="592" alt="Screenshot 2026-09-11 205819" src="https://github.com/user-attachments/assets/d38d84f7-8153-480b-9b3c-94814be9d19d" />
 
 
 ### Entities and Attributes
 
-| **Entity**            | **Attributes (PK, FK)**                                           | **Notes**                                               |
-| --------------------- | ----------------------------------------------------------------- | ------------------------------------------------------- |
-| Entity                | User_ID (PK), Reg_No, Book_No, Issue_Return                       | Stores user registration and book issue/return details. |
-| Staff                 | Staff_ID (PK), Name                                               | Stores library staff information.                       |
-| Authentication_System | Login_ID (PK), Password                                           | Maintains login credentials for staff.                  |
-| Readers               | User_ID (PK), FirstName, LastName, Name, Email, Phone_No, Address | Stores reader registration and contact details.         |
-| Books                 | ISBN (PK), Book_No, Title, Author_No, Category, Edition           | Stores book information and classification details.     |
-| Publisher             | Publisher_ID (PK), Name, Year_Of_Publisher                        | Stores publisher information.                           |
-
+| Entity | Attributes (PK, FK) | Notes |
+|--------|--------------------|-------|
+|Reports|	User_ID (FK), Reg_No, Book_No, Issue_Return	|Stores book issue and return report details.|
+|Staff	|Staff_ID (PK), Name|	Stores staff information.|
+|Authentication| System	Login_ID (PK), Password	|Stores login and authentication details.|
+|Readers|	User_ID (PK), FirstName, LastName, Name, Email, Phone_No, Address	|Stores reader/member details.|
+|Books	|Book_No (PK), ISBN, Title, Author_No, Category, Edition	|Stores book information.|
+|Publisher|	Publisher_ID (PK), Name, Year_Of_Publication|	Stores publisher details.|
 
 ### Relationships and Constraints
 
-| **Relationship**                      | **Cardinality** | **Participation** | **Notes**                                                             |
-| ------------------------------------- | --------------- | ----------------- | --------------------------------------------------------------------- |
-| Entity — Manages — Staff              | N:1             | Partial           | Multiple entity records can be managed by one staff member.           |
-| Staff — Login — Authentication_System | N:1             | Partial           | Multiple staff members are associated with the authentication system. |
-| Staff — Keeps_Track_Of — Readers      | M:N             | Partial           | Multiple staff members can keep track of multiple readers.            |
-| Staff — Maintain — Books              | 1:N             | Partial           | One staff member can maintain multiple books.                         |
-| Readers — Reserve_Return_Date — Books | 1:N (As drawn)  | Partial           | One reader can reserve or borrow multiple books.                      |
-| Books — Relationship — Publisher      | N:1             | Partial           | Multiple books can be associated with one publisher.                  |
-
-
+| Relationship | Cardinality | Participation | Notes |
+|--------------|------------|---------------|-------|
+|Reports| — Manages — Staff|	N:1	|Partial|	Multiple reports can be managed by one staff member.|
+|Staff| — Login — Authentication System|	N:1|	Partial|	Multiple staff members can use the authentication system.|
+|Staff |— Keeps Track Of — Readers|	M:N|	Partial|	Staff can keep track of multiple readers, and readers can be managed by multiple staff members.|
+|Staff |— Maintain — Books	|1:N|	Partial|	One staff member can maintain multiple books.|
+|Publisher| — Published By — Books|	1:N	|Partial|	One publisher can publish multiple books, while each book is associated with a publisher.|
+|Readers |— Reserve/Return Date — Books|	1:N|	Partial|	A reader can reserve/return multiple books. The relationship stores ReserveDate, Due_Date, and Return_Date.|
 ### Assumptions
-1.Each reader, staff member, book, and publisher has a unique ID.
+-Each Staff member has a unique Staff_ID.
 
-2.Each reader is identified by a unique User_ID.
+-Each Reader has a unique User_ID.
 
-3.Each book is identified by its ISBN.
+-Each Book has a unique Book_No.
 
-4.Staff members are responsible for managing library operations.
+-Each Publisher has a unique Publisher_ID.
 
-5.Readers can borrow or reserve multiple books.
+-A staff member can manage multiple reports.
 
-6.ReserveDate, Due_Date, and Return_Date are maintained to track borrowing and returning activities.
+-Staff members can maintain multiple books and keep track of readers.
 
-7.One publisher can publish multiple books.
-
-8.Each book is associated with one publisher.
-
-T9.he authentication system maintains login credentials for staff members.
-
-10.Staff members maintain book records and reader information.
+-A publisher can publish multiple books, while each book belongs to one publisher.
 
 ---
 
@@ -148,56 +130,43 @@ A popular restaurant wants to manage reservations, orders, and billing.
 - Waiters assigned to serve reservations.
 
 ### ER Diagram:
-<img width="1007" height="608" alt="c" src="https://github.com/user-attachments/assets/aa18ba04-693c-4028-846f-7c0a43b3c128" />
+<img width="1007" height="608" alt="Screenshot 2026-09-11 205652" src="https://github.com/user-attachments/assets/a961dc4a-32fe-4b9d-93b3-2d1eb8113f49" />
 
 
 ### Entities and Attributes
 
-| **Entity**  | **Attributes (PK, FK)**                        | **Notes**                                                                          |
-| ----------- | ---------------------------------------------- | ---------------------------------------------------------------------------------- |
-| Customer    | C_ID (PK), Name, Email, Phone_No, Address      | Stores customer registration and contact information.                              |
-| Reservation | R_ID (PK), Date, C_ID (FK), ID (FK)            | Stores customer reservation details and restaurant reference.                      |
-| Restaurant  | ID (PK), Name, Location                        | Stores restaurant details and location information.                                |
-| Order       | O_ID (PK), ID (FK), C_ID (FK), Amount, Date    | Stores customer order details and associated restaurant.                           |
-| Delivery    | D_ID (PK), Date, Status, O_ID (FK)             | Stores delivery information and order status.                                      |
-| Receive     | No attributes specified                        | Represents the receiving relationship between Order and Restaurant in the diagram. |
-| Menu_Item   | M_ID (PK), Name, Price, Description, R_ID (FK) | Stores menu item details and restaurant reference.                                 |
-
-
+| Entity | Attributes (PK, FK) | Notes |
+|--------|--------------------|-------|
+|Customer	|C_ID (PK), Name, Email, Phone, Address|	Stores customer details.|
+|Reservation|	R_ID (PK), C_ID (FK), ID (FK), Date	|Stores reservation details made by customers.|
+|Restaurant|	ID (PK), Name, Location	|Stores restaurant information.|
+|Order| O_ID (PK), C_ID (FK), ID (FK), Amount, Date|	Stores customer order details.|
+|Menu Item|	M_ID (PK), R_ID (FK), Name, Price, Description|	Stores menu items offered by restaurants.|
+|Delivery	|D_ID (PK), O_ID (FK), Date, Status|	Stores delivery details for orders.|
 ### Relationships and Constraints
 
-| **Relationship**                        | **Cardinality**       | **Participation** | **Notes**                                                    |
-| --------------------------------------- | --------------------- | ----------------- | ------------------------------------------------------------ |
-| Customer — Have — Reservation           | 1:N                   | Partial           | One customer can make multiple reservations.                 |
-| Reservation — Relationship — Restaurant | N:1                   | Partial           | Multiple reservations can be associated with one restaurant. |
-| Customer — Place — Order                | 1:N                   | Partial           | One customer can place multiple orders.                      |
-| Order — Receive — Restaurant            | M:1 (Through Receive) | Partial           | Multiple orders can be received by one restaurant.           |
-| Restaurant — Offers — Menu_Item         | 1:N                   | Partial           | One restaurant can offer multiple menu items.                |
-| Order — Associated_With — Delivery      | 1:1                   | Partial           | Each order is associated with one delivery record.           |
-
+| Relationship | Cardinality | Participation | Notes |
+|--------------|------------|---------------|-------|
+|Customer — Have — Reservation|	1:M	|Partial|	A customer can make multiple reservations, while each reservation belongs to one customer.|
+|Restaurant — Have — Reservation|	1:M|	Partial|	A restaurant can have multiple reservations, while each reservation is for one restaurant.|
+|Customer — Place — Order	|1:M	|Partial	|A customer can place multiple orders, while each order belongs to one customer.|
+|Restaurant — Receive — Order|	1:M	|Partial|	A restaurant can receive multiple orders, while each order is received by one restaurant.|
+|Restaurant — Offers — Menu Item|	1:M	|Total (Menu Item)|A restaurant can offer multiple menu items, while each menu item belongs to one restaurant.|
 
 ### Assumptions
--Each customer, reservation, restaurant, order, delivery, and menu item has a unique ID.
-
 -A customer can make multiple reservations.
 
--Each reservation belongs to one restaurant.
+-A customer can place multiple orders.
 
--Customers can place multiple orders.
-
--Each order is associated with a particular restaurant.
+-A restaurant can receive multiple orders and reservations.
 
 -A restaurant can offer multiple menu items.
 
 -Each menu item belongs to one restaurant.
 
--Each order is associated with one delivery record.
+-An order may have one associated delivery.
 
--Delivery status is maintained to track order delivery.
 
--Order amount and date are maintained for billing and tracking purposes.
-
--The Receive entity represents the process of receiving orders by the restaurant.
 
 ---
 
